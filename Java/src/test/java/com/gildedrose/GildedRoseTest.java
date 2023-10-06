@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GildedRoseTest {
 
-    private Item[] items;
+    private AbstractItem[] items;
     private GildedRose cut;
 
     private void ThenTheQualityIs(int expected) {
-        assertEquals(expected, cut.items[0].quality);
+        assertEquals(expected, cut.items[0].item.quality);
     }
 
     private void WhenDaysPass(int numberOfDays) {
@@ -19,13 +19,13 @@ class GildedRoseTest {
             cut.updateItems();
     }
 
-    private void givenTheItems(Item... items) {
+    private void givenTheItems(AbstractItem... items) {
         this.items = items;
     }
 
     @Test
     void aNormalItemDegradesInQualityByOneAsLongAsItsSellByDateHasNotPassed() {
-        givenTheItems(new Item("Some Item", 10, 20));
+        givenTheItems(new NormalItem("Some Item", 10, 20));
         WhenDaysPass(1);
         ThenTheQualityIs(19);
         WhenDaysPass(5);
@@ -36,7 +36,7 @@ class GildedRoseTest {
 
     @Test
     void aNormalItemDegradesInQualityByTwoOnceItSellByDateHasPassed() {
-        givenTheItems(new Item("Some Item", 0, 20));
+        givenTheItems(new NormalItem("Some Item", 0, 20));
         WhenDaysPass(1);
         ThenTheQualityIs(18);
         WhenDaysPass(5);
@@ -46,8 +46,34 @@ class GildedRoseTest {
     }
 
     @Test
+    void aConjuredItemDegradesInQualityByTwoAsLongAsItsSellByDateHasNotPassed() {
+        givenTheItems(new ConjuredItem("Conjured Item", 10, 20));
+        WhenDaysPass(1);
+        ThenTheQualityIs(18);
+        WhenDaysPass(5);
+        ThenTheQualityIs(8);
+        WhenDaysPass(4);
+        ThenTheQualityIs(0);
+        WhenDaysPass(1);
+        ThenTheQualityIs(0);
+    }
+
+    @Test
+    void aConjuredItemDegradesInQualityByFourOnceItSellByDateHasPassed() {
+        givenTheItems(new ConjuredItem("Conjured Other Item", 0, 20));
+        WhenDaysPass(1);
+        ThenTheQualityIs(16);
+        WhenDaysPass(2);
+        ThenTheQualityIs(8);
+        WhenDaysPass(2);
+        ThenTheQualityIs(0);
+        WhenDaysPass(1);
+        ThenTheQualityIs(0);
+    }
+
+    @Test
     void theQualityOfAnItemIsNeverLowerThanZero() {
-        givenTheItems(new Item("Some Item", 0, 2));
+        givenTheItems(new NormalItem("Some Item", 0, 2));
         WhenDaysPass(1);
         ThenTheQualityIs(0);
         WhenDaysPass(5);
@@ -58,7 +84,7 @@ class GildedRoseTest {
 
     @Test
     void theQualityOfAgedBrieIncreasesButNeverExceeds50() {
-        givenTheItems(new Item("Aged Brie", 10, 20));
+        givenTheItems(new AgedBrie(10, 20));
         WhenDaysPass(1);
         ThenTheQualityIs(21);
         WhenDaysPass(5);
@@ -73,7 +99,7 @@ class GildedRoseTest {
 
     @Test
     void theQualityOfSulfurasIsConstantAnd80() {
-        givenTheItems(new Item("Sulfuras, Hand of Ragnaros", 10, 80));
+        givenTheItems(new Sulfuras(10, 80));
         WhenDaysPass(1);
         ThenTheQualityIs(80);
         WhenDaysPass(5);
@@ -86,7 +112,7 @@ class GildedRoseTest {
 
     @Test
     void theQualityOfBackstagePassesIsSpecial() {
-        givenTheItems(new Item("Backstage passes to a TAFKAL80ETC concert", 20, 10));
+        givenTheItems(new BackstagePass("Backstage passes to a TAFKAL80ETC concert", 20, 10));
         WhenDaysPass(1);
         ThenTheQualityIs(11);
         WhenDaysPass(5);
@@ -107,7 +133,7 @@ class GildedRoseTest {
 
     @Test
     void theQualityOfBackstagePassesIsSpecialButAlsoCappedAt50() {
-        givenTheItems(new Item("Backstage passes to a TAFKAL80ETC concert", 20, 40));
+        givenTheItems(new BackstagePass("Backstage passes to a TAFKAL80ETC concert", 20, 40));
         WhenDaysPass(10);
         ThenTheQualityIs(50);
         WhenDaysPass(5);
