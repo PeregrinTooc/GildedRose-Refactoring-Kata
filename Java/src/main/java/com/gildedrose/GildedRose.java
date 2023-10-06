@@ -12,39 +12,25 @@ class GildedRose {
             if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
             } else {
                 item.sellIn--;
+                if (item.name.equals("Aged Brie") )
+                    item.quality = Math.min(50, item.quality + (item.sellIn < 0? 2 : 1 ));
+                else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert"))
 
-                if (item.name.equals("Aged Brie") || item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                     item.quality = Math.min(50, item.quality + 1);
-
-                    if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (item.sellIn < 10) {
-                            if (item.quality < 50) {
-                                item.quality++;
-                            }
-                        }
-                        if (item.sellIn < 5) {
-                            if (item.quality < 50) {
-                                item.quality++;
-                            }
-                        }
-                        if (item.sellIn < 0) {
-                            item.quality = 0;
-                        }
-                    } else {
-                        if (item.sellIn < 0) {
-                            if (item.quality < 50) {
-                                item.quality++;
-                            }
+                    if (item.sellIn < 10) {
+                        if (item.quality < 50) {
+                            item.quality++;
                         }
                     }
-
-
-                } else {
-                    item.quality = Math.max(0, item.quality - 1);
+                    if (item.sellIn < 5) {
+                        if (item.quality < 50) {
+                            item.quality++;
+                        }
+                    }
                     if (item.sellIn < 0) {
-                        item.quality = Math.max(0, item.quality - 1);
-                    }
-                }
+                        item.quality = 0;
+                    } else
+                    item.quality = Math.max(0, item.quality - (item.sellIn < 0? 2 : 1 ));
             }
         }
     }
