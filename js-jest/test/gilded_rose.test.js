@@ -33,6 +33,13 @@ describe("Gilded Rose", function () {
     expect(gildedRose.items[0].quality).toBe(11);
   });
 
+  it("should increase quality of Aged Brie by two once it has passed its sell by date", function () {
+    const agedBrie = new Item("Aged Brie", 0, 10);
+    const gildedRose = new Shop([agedBrie]);
+    gildedRose.updateQuality();
+    expect(gildedRose.items[0].quality).toBe(12);
+  });
+
   it("should not increase quality of Aged Brie above 50", function () {
     const agedBrie = new Item("Aged Brie", 1, 50);
     const gildedRose = new Shop([agedBrie]);

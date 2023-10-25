@@ -18,48 +18,39 @@ class Shop {
       item.sellIn = item.sellIn - 1;
 
       if (item.name == "Aged Brie") {
-        item.quality = Math.min(this.calculateNewAgedBrieQuality(item), 50);
+        this.calculateNewAgedBrieQuality(item);
         return;
       }
 
       if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
+        this.calculateNewBackstagePassQuality(item);
+        return
       }
 
-      if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-        if (item.quality > 0) {
-          item.quality = item.quality - 1;
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-          if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.sellIn < 10) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-            if (item.sellIn < 5) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1;
-              }
-            }
-          }
-        }
-      }
-      if (item.sellIn < 0) {
-        if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-          if (item.quality > 0) {
-            item.quality = item.quality - 1;
-          }
-        } else {
-          item.quality = item.quality - item.quality;
-        }
-      }
+      this.calculateNewNormalItemQuality(item);
     });
   }
 
+  calculateNewNormalItemQuality(item) {
+    item.quality = Math.max(item.sellIn < 0 ? item.quality - 2 : item.quality - 1, 0);
+  }
+
+  calculateNewBackstagePassQuality(item) {
+    item.quality = item.quality + 1;
+    if (item.sellIn < 10) {
+      item.quality = item.quality + 1;
+    }
+    if (item.sellIn < 5) {
+      item.quality = item.quality + 1;
+    }
+    if (item.sellIn < 0) {
+      item.quality = item.quality - item.quality;
+    }
+    item.quality = Math.min(item.quality, 50)
+  }
+
   calculateNewAgedBrieQuality(item) {
-    return item.sellIn < 0 ? item.quality + 2 : item.quality + 1;
+    item.quality = Math.min(item.sellIn < 0 ? item.quality + 2 : item.quality + 1, 50);
   }
 }
 
