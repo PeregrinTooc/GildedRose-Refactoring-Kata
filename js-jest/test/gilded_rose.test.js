@@ -104,4 +104,15 @@ describe("Gilded Rose", function () {
     gildedRose.updateQuality();
     expect(gildedRose.items[0].quality).toBe(0);
   });
+
+  it("should decrease the quality by two after one day ", function () {
+    const conjured = new Item(
+      "Conjured bow",
+      5,
+      10
+    );
+    const gildedRose = new Shop([conjured]);
+    gildedRose.updateQuality();
+    expect(gildedRose.items[0].quality).toBe(8);
+  });
 });
