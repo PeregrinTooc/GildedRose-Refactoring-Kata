@@ -7,12 +7,12 @@ describe("Gilded Rose", function () {
     anyItem.sellIn = 1;
   });
 
-  it("should decrease quality by one for normal items while there sell by date has not passed", function () {
+  it("should decrease quality by one for normal items while their sell by date has not passed", function () {
     const gildedRose = new Shop([anyItem]);
     gildedRose.updateQuality();
     expect(gildedRose.items[0].quality).toBe(9);
   });
-  it("should decrease quality by two for normal items once there sell by date has passed", function () {
+  it("should decrease quality by two for normal items once their sell by date has passed", function () {
     const gildedRose = new Shop([anyItem]);
     gildedRose.updateQuality();
     gildedRose.updateQuality();
