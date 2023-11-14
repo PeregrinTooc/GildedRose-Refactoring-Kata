@@ -105,7 +105,7 @@ describe("Gilded Rose", function () {
     expect(gildedRose.items[0].quality).toBe(0);
   });
 
-  it("should decrease the quality by two after one day ", function () {
+  it("should decrease the quality by two after one day for conjured items", function () {
     const conjured = new Item(
       "Conjured bow",
       5,
